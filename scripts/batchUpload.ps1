@@ -33,7 +33,7 @@ foreach ($video in $mkvFiles) {
             New-Item -ItemType Directory -Path "dist" | Out-Null
         }
 
-        ./scripts/archive.ps1 -DestinationFolder dist/$video
+        ./scripts/archive.ps1 -DestinationFolder dist/$video -CurrentVideo $video
         $index++
     }
     catch {
