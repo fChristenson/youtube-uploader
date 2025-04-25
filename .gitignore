@@ -6,7 +6,6 @@ test.ps1
 *.txt
 *.jpg
 *.jpeg
-*.png
 *.mkv
 dist/
 run.ps1
