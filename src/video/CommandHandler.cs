@@ -1,19 +1,16 @@
 using System.CommandLine;
-using Shared;
 
-namespace VideoOptimizer;
+namespace VideoManager;
 
 public static class CommandHandler
 {
     public static void AddCommand(RootCommand cmd)
     {
         // video command
-        var videoCommand = new Command("video", "Optimize video for youtube");
+        var videoCommand = new Command("video", "Manage videos");
 
-        var arg = new Argument<string>("path to video", "Path to video file you want to process");
-        videoCommand.AddArgument(arg);
-
-        videoCommand.SetHandler(VideoOptimizer.ProcessVideo, arg);
+        Optimizer.CommandHandler.AddCommand(videoCommand);
+        Lister.CommandHandler.AddCommand(videoCommand);
 
         cmd.Add(videoCommand);
     }

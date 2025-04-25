@@ -1,6 +1,6 @@
 using Shared;
 
-namespace VideoOptimizer;
+namespace VideoManager.Optimizer;
 
 public static class VideoOptimizer
 {
