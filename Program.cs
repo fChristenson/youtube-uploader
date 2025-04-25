@@ -11,5 +11,6 @@ Upload.CommandHandler.AddCommand(rootCommand);
 Slice.CommandHandler.AddCommand(rootCommand);
 Transcript.CommandHandler.AddCommand(rootCommand);
 VideoOptimizer.CommandHandler.AddCommand(rootCommand);
+EndScreen.CommandHandler.AddCommand(rootCommand);
 
 return await rootCommand.InvokeAsync(args);

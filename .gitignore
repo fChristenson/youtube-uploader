@@ -9,3 +9,4 @@ test.ps1
 *.mkv
 dist/
 run.ps1
+youtube_cookies.json
