@@ -3,9 +3,12 @@
 ## Getting started
 
 - Install ffmpeg
-- GCP OAuth2 credentials
-- YouTube Data API v3 enabled
-- OpenAI api key
+- Create GCP account
+- Create GCP project
+- Create GCP OAuth2 credentials
+- Set YouTube Data API v3 to enabled for project
+- Create OpenAI account
+- Create OpenAI api key
 
 ```powershell
 Description:
