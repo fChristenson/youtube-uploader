@@ -33,4 +33,16 @@ else {
     Write-Warning "Current video file '$CurrentVideo' not found."
 }
 
+$Slice = "slice.$CurrentVideo"
+
+if (Test-Path -Path $Slice) {
+    $videoFile = Get-Item -Path $Slice
+    $videoDest = Join-Path -Path $DestinationFolder -ChildPath $videoFile.Name
+    Move-Item -Path $videoFile.FullName -Destination $videoDest -Force
+    Write-Host "Moved current video slice file '$Slice' to '$DestinationFolder'"
+}
+else {
+    Write-Warning "Current video slice file '$Slice' not found."
+}
+
 Write-Host "All matching files moved to '$DestinationFolder'"
