@@ -1,0 +1,12 @@
+bin/
+obj/
+test.ps1
+*.mp3
+*.mp4
+*.txt
+*.jpg
+*.jpeg
+*.png
+*.mkv
+dist/
+run.ps1

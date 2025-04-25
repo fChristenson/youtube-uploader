@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Apis.Auth" Version="1.69.0" />
+    <PackageReference Include="Google.Apis.YouTube.v3" Version="1.69.0.3742" />
+    <PackageReference Include="SkiaSharp" Version="3.116.1" />
+    <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="src/thumbnail/src/image/Oswald-Bold.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="src/thumbnail/src/image/background.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>
