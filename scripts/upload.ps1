@@ -12,9 +12,10 @@ param(
 )
 
 $distVideo = "youtube.$video.mp4"
+$animatedVideo = "animated.$distVideo"
 $thumbnail = "thumbnail.still.$distVideo.jpg"
 
-dotnet run video $video
+dotnet run video optimize $video
 ./scripts/gatherVideoData.ps1 -key $key -video $video
 
 $transcript = Get-Content .\transcript.txt -Raw
@@ -24,7 +25,9 @@ $title = Get-Content .\title.txt -Raw
 $tags = Get-Content .\tags.txt -Raw
 $description = Get-Content .\description.txt -Raw
 
-$videoId = $(dotnet run -- upload video $distVideo `
+dotnet run video animate $distVideo
+
+$videoId = $(dotnet run -- upload video $animatedVideo `
         -v `
         -t $title `
         -r $releaseDateTime `
