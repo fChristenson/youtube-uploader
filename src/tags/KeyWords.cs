@@ -8,7 +8,7 @@ public static class KeywordExtractor
     public static async Task GetTagsAsync(string transcript, string apiKey)
     {
         string prompt = $"""
-        Extract 10 YouTube-friendly keywords or short phrases from the following text. List them on a single line separated by ",". Avoid filler words and focus on topic-relevant terms:
+        Extract 10 YouTube-friendly keywords or short phrases from the following text. Focus on programming, web development, software engineering, and related technical topics. List them on a single line separated by commas. Avoid filler words and general phrases; prioritize precise, topic-relevant technical terms:
 
         "{transcript}"
         """;
