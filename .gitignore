@@ -1,12 +1,5 @@
 bin/
 obj/
-test.ps1
-*.mp3
-*.mp4
-*.txt
-*.jpg
-*.jpeg
-*.mkv
 dist/
 run.ps1
-youtube_cookies.json
+
