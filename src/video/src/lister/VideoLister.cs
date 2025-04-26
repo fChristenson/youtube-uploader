@@ -2,16 +2,14 @@ using Google.Apis.Auth.OAuth2;
 using Google.Apis.Services;
 using Google.Apis.Util.Store;
 using Google.Apis.YouTube.v3;
-using Shared;
 
 namespace VideoManager.Lister;
 
 public static class VideoLister
 {
     [Obsolete]
-    public static async Task ListVideosByDateRangeAsync(DateTime startDate, DateTime endDate, string clientId, string clientSecret, string channelId)
+    public static async Task ListVideosByDateRangeAsync(DateTime startDate, DateTime endDate, string clientId, string clientSecret)
     {
-        // Initialize the OAuth 2.0 authentication process
         var clientSecrets = new ClientSecrets
         {
             ClientId = clientId,
@@ -25,56 +23,60 @@ public static class VideoLister
             CancellationToken.None,
             new FileDataStore("YouTubeLister")
         );
-        // Initialize YouTube service
+
         var youtubeService = new YouTubeService(new BaseClientService.Initializer()
         {
             HttpClientInitializer = credential,
             ApplicationName = "YouTubeVideoLister"
         });
 
-        // Define the date range
-        string publishedAfter = startDate.ToString("yyyy-MM-ddTHH:mm:ssZ");
-        string publishedBefore = endDate.ToString("yyyy-MM-ddTHH:mm:ssZ");
+        // Step 1: Get the uploads playlist ID for the authenticated user's channel
+        var channelsRequest = youtubeService.Channels.List("contentDetails");
+        channelsRequest.Mine = true;
+        var channelsResponse = await channelsRequest.ExecuteAsync();
 
-        var videoIds = await GetVideosByDateRangeAsync(youtubeService, channelId, publishedAfter, publishedBefore);
+        var uploadsPlaylistId = channelsResponse.Items[0].ContentDetails.RelatedPlaylists.Uploads;
 
-        Console.WriteLine($"Videos uploaded between {startDate.ToShortDateString()} and {endDate.ToShortDateString()}:");
-        Console.WriteLine(string.Join(",", videoIds));
-    }
-
-    // Method to get video IDs uploaded within a date range
-    [Obsolete]
-    private static async Task<List<string>> GetVideosByDateRangeAsync(YouTubeService youtubeService, string channelId, string publishedAfter, string publishedBefore)
-    {
-        var videoIds = new List<string>();
+        // Step 2: Gather all video IDs from the uploads playlist
+        var allVideoIds = new List<string>();
         string? nextPageToken = null;
 
         do
         {
-            // Make the API request to get videos uploaded in the specified date range
-            var searchRequest = youtubeService.Search.List("snippet");
-            searchRequest.ChannelId = channelId;
-            searchRequest.PublishedAfter = publishedAfter;
-            searchRequest.PublishedBefore = publishedBefore;
-            searchRequest.Order = SearchResource.ListRequest.OrderEnum.Date;
-            searchRequest.MaxResults = 50;
-            searchRequest.PageToken = nextPageToken;
+            var playlistRequest = youtubeService.PlaylistItems.List("contentDetails");
+            playlistRequest.PlaylistId = uploadsPlaylistId;
+            playlistRequest.MaxResults = 50;
+            playlistRequest.PageToken = nextPageToken;
 
-            var searchResponse = await searchRequest.ExecuteAsync();
+            var playlistResponse = await playlistRequest.ExecuteAsync();
 
-            // Process the search results and extract video IDs
-            foreach (var item in searchResponse.Items)
+            allVideoIds.AddRange(playlistResponse.Items.Select(i => i.ContentDetails.VideoId));
+
+            nextPageToken = playlistResponse.NextPageToken;
+        } while (nextPageToken != null);
+
+        // Step 3: Batch fetch video details and filter by publish time
+        var filteredVideoIds = new List<string>();
+        for (int i = 0; i < allVideoIds.Count; i += 50)
+        {
+            var batch = allVideoIds.Skip(i).Take(50).ToList();
+            var videosRequest = youtubeService.Videos.List("snippet,status");
+            videosRequest.Id = string.Join(",", batch);
+            var videosResponse = await videosRequest.ExecuteAsync();
+
+            foreach (var video in videosResponse.Items)
             {
-                if (item.Id.Kind == "youtube#video")
+                var publishedAt = video.Snippet.PublishedAt;
+                if (publishedAt.HasValue &&
+                    publishedAt.Value >= startDate.ToUniversalTime() &&
+                    publishedAt.Value <= endDate.ToUniversalTime())
                 {
-                    videoIds.Add(item.Id.VideoId);
+                    filteredVideoIds.Add(video.Id);
                 }
             }
+        }
 
-            nextPageToken = searchResponse.NextPageToken;
-
-        } while (nextPageToken != null); // Loop until all pages are processed
-
-        return videoIds;
+        Console.WriteLine($"Videos uploaded between {startDate} and {endDate}:");
+        Console.WriteLine(string.Join(", ", filteredVideoIds));
     }
 }

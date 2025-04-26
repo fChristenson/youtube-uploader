@@ -21,11 +21,8 @@ public static class CommandHandler
         var clientSecret = CommandUtils.GetGCPClientSecretOption();
         listCommand.AddOption(clientSecret);
 
-        var channelId = new Option<string>("channelId", getDefaultValue: () => "UC0BAd8tPlDqFvDYBemHcQPQ", "Youtube channel ID");
-        listCommand.Add(channelId);
-
 #pragma warning disable CS0612 // Type or member is obsolete
-        listCommand.SetHandler(VideoLister.ListVideosByDateRangeAsync, from, to, clientId, clientSecret, channelId);
+        listCommand.SetHandler(VideoLister.ListVideosByDateRangeAsync, from, to, clientId, clientSecret);
 #pragma warning restore CS0612 // Type or member is obsolete
 
         cmd.Add(listCommand);
