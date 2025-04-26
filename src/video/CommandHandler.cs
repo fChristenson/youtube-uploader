@@ -11,6 +11,7 @@ public static class CommandHandler
 
         Optimizer.CommandHandler.AddCommand(videoCommand);
         Lister.CommandHandler.AddCommand(videoCommand);
+        Animator.CommandHandler.AddCommand(videoCommand);
 
         cmd.Add(videoCommand);
     }
