@@ -16,6 +16,9 @@ public static class TitleExtractor
         - Make it highly click-worthy and engaging
         - Reflect the main idea clearly
         - Naturally include relevant tech-related keywords when possible
+        - If using emojis, use only common ones like 🚀, 🔥, 👍, 💻, 🎯, 🎉
+        - Avoid complex, rare, or platform-specific emojis
+
         
         Transcript:
         "{transcript}"

@@ -16,6 +16,9 @@ public static class TextExtractor
         - *Italic* = nuanced, ironic, or intriguing terms
         - Do **not** emphasize entire phrases or full sentences.
         - Only emphasize a word if it makes contextual sense.
+        - If using emojis, use only common ones like 🚀, 🔥, 👍, 💻, 🎯, 🎉
+        - Avoid complex, rare, or platform-specific emojis
+
         
         Example:
         "**AI** *rewrites* **everything**"

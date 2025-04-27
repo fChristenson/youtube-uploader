@@ -14,6 +14,9 @@ public static class DescriptionExtractor
         - Be engaging, informative, and relevant to developers and tech enthusiasts
         - Naturally include technical keywords related to the content
         - Encourage viewers to comment, ask questions, or share their opinions
+        - If using emojis, use only common ones like 🚀, 🔥, 👍, 💻, 🎯, 🎉
+        - Avoid complex, rare, or platform-specific emojis
+
         
         Transcript:
         "{transcript}"
