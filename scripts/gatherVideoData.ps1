@@ -8,7 +8,7 @@ param(
 Write-Host "Running data gathering for video $video"
 
 Write-Host slice
-dotnet run -- slice $video
+dotnet run -- slice -s 60 $video
 Write-Host mp3
 dotnet run -- mp3 slice.$video
 Write-Host transcript
