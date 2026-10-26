@@ -1,8 +1,10 @@
+using Shared;
+
 namespace Slice;
 
 public static class Slice
 {
-    public static void SliceFile(string filePath, int size)
+    public static void SliceFile(string filePath, int seconds)
     {
         if (!File.Exists(filePath))
         {
@@ -10,26 +12,25 @@ public static class Slice
             return;
         }
 
-        if (size <= 0)
+        if (seconds <= 0)
         {
-            Console.WriteLine("❌ Invalid chunk size. Provide a number > 0.");
+            Console.WriteLine("❌ Invalid duration. Provide a number of seconds > 0.");
             return;
         }
 
-        long chunkSize = size * 1024L * 1024L;
-        byte[] buffer = new byte[chunkSize];
         string fileName = Path.GetFileName(filePath);
         string directory = Path.GetDirectoryName(filePath) ?? ".";
-
-        using FileStream inputStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-        var ext = Path.GetExtension(filePath);
-
         string slicePath = Path.Combine(directory, $"slice.{fileName}");
-        using FileStream outputStream = new FileStream(slicePath, FileMode.Create, FileAccess.Write);
 
-        int bytesRead = inputStream.Read(buffer, 0, buffer.Length);
-        outputStream.Write(buffer, 0, bytesRead);
+        FFmpeg.Run($"-y -i \"{filePath}\" -t {seconds} -c copy \"{slicePath}\"");
 
-        Console.WriteLine($"✅ Created: {slicePath} ({bytesRead} bytes)");
+        if (File.Exists(slicePath))
+        {
+            Console.WriteLine($"✅ Created: {slicePath} (first {seconds}s)");
+        }
+        else
+        {
+            Console.WriteLine("❌ Failed to slice video.");
+        }
     }
 }

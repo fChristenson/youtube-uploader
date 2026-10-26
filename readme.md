@@ -28,7 +28,7 @@ Commands:
   thumbnail                  Create thumbnail image for video
   title <text>               Use gpt-3.5-turbo to get title from transcript
   upload                     Upload a video or thumbnail to youtube channel
-  slice <path to file>       Slice file down to a smaller size
+  slice <path to file>       Cut the first N seconds of a video
   transcript <path to file>  Get OpenAI Whisper transcript of mp3 file
   video <path to video>      Optimize video for youtube
 ```
