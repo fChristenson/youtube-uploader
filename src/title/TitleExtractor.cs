@@ -1,4 +1,3 @@
-using System.Text.Json;
 using Shared;
 
 namespace Title;
@@ -25,6 +24,6 @@ public static class TitleExtractor
 
         var systemRole = "You are a YouTube video strategist helping creators craft great titles.";
         var response = await GptApiClient.SendPrompt(prompt, systemRole, apiKey);
-        Console.WriteLine(JsonSerializer.Deserialize<string>(response));
+        Console.WriteLine(response.Trim().Trim('"'));
     }
 }
