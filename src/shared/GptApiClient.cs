@@ -14,13 +14,13 @@ public static class GptApiClient
 
         var requestBody = new
         {
-            model = "gpt-3.5-turbo",
+            model = "gpt-6-luna",
             messages = new[]
             {
                 new { role = "system", content = systemRole },
                 new { role = "user", content = prompt }
             },
-            temperature = 0.4
+            temperature = 1
         };
 
         var response = await httpClient.PostAsJsonAsync("https://api.openai.com/v1/chat/completions", requestBody);
